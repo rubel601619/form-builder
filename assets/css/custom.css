@@ -1,0 +1,33 @@
+[v-cloak] {
+   display: none;
+}
+.bg-custom {
+   background-color: #555879;
+}
+.bg-light-custom {
+   background-color: hsl(0, 0%, 95%);
+}
+.drag-over {
+   background-color: #f8f9fa !important;
+   border-color: #0d6efd !important;
+}
+.container-wrapper .btn,
+.field-preview .btn {
+   opacity: 0;
+}
+.container-wrapper:hover .btn,
+.field-preview:hover .btn {
+   opacity: 1;
+}
+
+.empty-drop-element,
+.inner-dropable,
+.container-wrapper,
+.field-preview .custom-border {
+   border: 2px dashed #dee2e6;
+   padding: 0.25rem 0.5rem 0.5rem;
+}
+.empty-drop-element {
+   min-height: 300px;
+   background-color: #f8f9fa;
+}

@@ -1,0 +1,21 @@
+{
+    "editor.tabSize": 3,
+    "editor.insertSpaces": true,
+    "editor.detectIndentation": false,
+    "prettier.tabWidth": 3,
+    "prettier.useTabs": false,
+    "prettier.bracketSameLine": true,
+    "prettier.vueIndentScriptAndStyle": true,
+    "editor.formatOnSave": true,
+    "[html]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[css]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+   },
+   "editor.formatOnPaste": true,
+   "editor.formatOnType": true
+}

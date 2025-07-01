@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Render Vue Form from LocalStorage</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .form-section {
+      padding: 15px;
+      border: 1px solid #ccc;
+      margin-bottom: 20px;
+      border-radius: 8px;
+    }
+    .form-container {
+      background: #f9f9f9;
+      border: 1px dashed #ccc;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+    pre{
+      padding: 1rem;
+      background-color: hsl(0, 0%, 20%);
+      color: white;
+    }
+  </style>
+</head>
+<body>
+<div id="app" class="container py-5">
+  <h3 class="mb-4 text-center">Rendered Form</h3>
+
+  <template v-if="formFields.length >= 1">
+  <form @submit.prevent class="form-section">
+    <div v-for="(field, index) in formFields" :key="index" class="mb-3">
+      
+      <!-- Single Input Fields -->
+      <div v-if="field.type !== 'container'">
+        <div v-if="field.type === 'checkbox'" class="form-check">
+          <input class="form-check-input" type="checkbox" :id="'checkbox' + index">
+          <label class="form-check-label" :for="'checkbox' + index">{{ field.label }}</label>
+        </div>
+        <div v-else>
+          <label :for="'field' + index" class="form-label">{{ field.label }}</label>
+          <input
+            class="form-control"
+            :type="field.type"
+            :id="'field' + index"
+            :placeholder="field.placeholder"
+          />
+        </div>
+      </div>
+
+      <!-- Container / Columns -->
+      <div v-else class="form-container">
+        <div class="row row-cols-1 row-cols-md-2">
+          <div class="col" v-for="(column, colIndex) in field.columns" :key="colIndex">
+            <div v-for="(nestedField, nestedIndex) in column.fields" :key="nestedIndex" class="mb-3">
+              <div v-if="nestedField.type === 'checkbox'" class="form-check">
+                <input class="form-check-input" type="checkbox" :id="'checkbox-c' + index + '-' + colIndex + '-' + nestedIndex">
+                <label class="form-check-label" :for="'checkbox-c' + index + '-' + colIndex + '-' + nestedIndex">{{ nestedField.label }}</label>
+              </div>
+              <div v-else>
+                <label :for="'nested' + index + '-' + colIndex + '-' + nestedIndex" class="form-label">{{ nestedField.label }}</label>
+                <input
+                  class="form-control"
+                  :type="nestedField.type"
+                  :id="'nested' + index + '-' + colIndex + '-' + nestedIndex"
+                  :placeholder="nestedField.placeholder"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">Submit</button>
+  </form>
+  </template>
+</div>
+
+<div class="container">
+  <pre>[
+  { "type": "text", "label": "Name", "placeholder": "Enter name" },
+  { "type": "email", "label": "Email", "placeholder": "Enter email" },
+  {
+    "type": "container",
+    "columns": [
+      { "fields": [{ "type": "tel", "label": "Phone", "placeholder": "Enter phone" }] },
+      { "fields": [{ "type": "checkbox", "label": "Agree to Terms" }] }
+    ]
+  }
+]</pre>
+</div>
+
+<!-- Vue 3 CDN -->
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script>
+const { createApp } = Vue;
+
+createApp({
+  data() {
+    return {
+      isTouch: false,
+      formFields: []
+    };
+  },
+  mounted() {
+    this.isTouch = 'ontouchstart' in window;
+    const saved = localStorage.getItem('vueFormBuilder');
+    if (saved) {
+      this.formFields = JSON.parse(saved);
+    }
+  }
+}).mount('#app');
+</script>
+</body>
+</html>
